@@ -4,9 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class TaskController extends Controller
 {
+
+    public function home()
+    {
+      
+        
+      return Inertia::render('task');
+    }
+
+    
     /**
      * Display a listing of the resource.
      */
@@ -14,8 +24,9 @@ class TaskController extends Controller
     {
         $index=Task::All();
         
-        return response()->json([
-            'tasks'=>$index]);
+      return Inertia::render('task', [
+        'tasks'=>$index
+              ]);
     }
 
     /**
