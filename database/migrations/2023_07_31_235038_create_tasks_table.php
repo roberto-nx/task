@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
             $table->bigInteger('priority');
             $table->text('task');
             $table->longText('task_description');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

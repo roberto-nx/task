@@ -5,18 +5,28 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
 
     public function home()
     {
-      
-        
       return Inertia::render('task');
     }
 
     
+
+    public function userHome()
+    { 
+        
+        $id = Auth::id();
+        $tasks=Task::where('user_id',$id)->get();
+        
+        return Inertia::render('taskUser', [
+            'tasks'=>$tasks
+                  ]);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -43,18 +53,14 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         $taskcreate = Task::create([
-            'task' => $request->task,
-            'task_description' => $request->taskdescription,
-            'priority' => $request->priority,
+            'task' => $request->newtask,
+            'priority' => $request->newtask_priority,
+            'user_id' => Auth::id(),
+            'task_description'=> $request->task_description,
         ]);
         
         
-            return response()->json(
-             [
-                 'message'=>"tarefa criada com sucesso",
-                 'task' =>$taskcreate
-             ],200
-            );
+        return to_route('home.user');
     }
 
     /**
@@ -84,33 +90,28 @@ class TaskController extends Controller
     public function update(Request $request, Task $task)
     {
         
-        $olldtask=Task::where('id', $request->id)->first();
-        $task=Task::where('id', $request->id)
+        $id = Auth::id();
+        $olldtask=Task::where('id', $request->numbertask)->first();
+        $task=Task::where('id', $request->numbertask)
             ->update([  
-            'task' => $request->task??$olldtask->task,
-            'task_description' => $request->taskdescription??$olldtask->task_description,
-            'priority' => $request->priority??$olldtask->priority,]);
+            'task' => $request->edit_task??$olldtask->task,
+            'task_description' => $request->task_description??$olldtask->task_description,
+            'priority' => $request->edit_priority??$olldtask->priority,
+            'user_id' => Auth::id()]);
+            
 
         
-        return response()->json(
-            [
-                'message' =>'tarefa atualizada com sucesso',
-                'tarefa'=>$task
-            ],200
-        );
+       return to_route('home.user');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Task $task)
+    public function destroy($id)
     {
+      
         $delete = Task::where('id', $id)->delete();
        
-        return response()->json(
-            [
-                'message'=>'tarefa deletada com sucesso',
-            ],200
-        );
+        return to_route('home.user');
     }
 }

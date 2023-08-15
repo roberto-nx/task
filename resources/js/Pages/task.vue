@@ -10,6 +10,7 @@ Essa ferramenta funciona armazenando suas tarefas no armazenamento local do seu 
  
 Lista de tarefas
 </h1>
+
 <ul>
 <li v-for="(task, numbertask) in tasks" :key="numbertask"  :id="'a'+task['numbertask']" >
   {{ task["task"]}} prioridade:{{ task["priority"]}}
@@ -49,10 +50,10 @@ import { h } from 'vue'
 export default {
     data() {
     return {
+      tasks:{},
       edit_task:'',
       edit_priority:'',
       teleport_id:"",
-      tasks:{},
       newtask:"",
       newtask_priority:"",
       numbertasktotal:0
@@ -72,7 +73,7 @@ export default {
        localStorage.setItem(this.teleport_id.replace('a',''), JSON.stringify(taskObject))
       },
       destroy(id){
-        console.log(id)
+        
      localStorage.removeItem(id);
      
 

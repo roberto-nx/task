@@ -37,7 +37,10 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::get('/home', [TaskController::class,'home']);
-
+Route::get('/home', [TaskController::class,'home'])->name('home.user');
+Route::get('/home/user', [TaskController::class,'userHome'])->name('home.user');
+Route::post('/create/task', [TaskController::class,'store']);
+Route::post('/update/task', [TaskController::class,'update']);
+Route::delete('/destroy/task/{id}', [TaskController::class,'destroy']);
 
 require __DIR__.'/auth.php';

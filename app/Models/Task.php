@@ -14,6 +14,7 @@ class Task extends Model
         
         'task',
         'task_description',
+        'user_id',
         'priority',
         'update_at',
         'create_at'
