@@ -54,7 +54,7 @@ class TaskController extends Controller
     {
         $taskcreate = Task::create([
             'task' => $request->newtask,
-            'priority' => $request->newtask_priority,
+            'amount' => $request->newtask_amount,
             'user_id' => Auth::id(),
             'task_description'=> $request->task_description,
         ]);
@@ -69,7 +69,7 @@ class TaskController extends Controller
     public function show(Task $task)
     {
         $index=Task::All()
-        ->sortBy('priority');
+        ->sortBy('amount');
        
         return view('welcome',['tasks' => $index]);
 
@@ -96,7 +96,7 @@ class TaskController extends Controller
             ->update([  
             'task' => $request->edit_task??$olldtask->task,
             'task_description' => $request->task_description??$olldtask->task_description,
-            'priority' => $request->edit_priority??$olldtask->priority,
+            'amount' => $request->edit_amount??$olldtask->amount,
             'user_id' => Auth::id()]);
             
 

@@ -17,7 +17,7 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
+Route::get('/home', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
@@ -37,7 +37,7 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::get('/home', [TaskController::class,'home'])->name('home.user');
+Route::get('/', [TaskController::class,'home'])->name('home.user');
 Route::get('/home/user', [TaskController::class,'userHome'])->name('home.user');
 Route::post('/create/task', [TaskController::class,'store']);
 Route::post('/update/task', [TaskController::class,'update']);

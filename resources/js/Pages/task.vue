@@ -1,61 +1,130 @@
 
-<template>
-
-
-<h5>
-Essa ferramenta funciona armazenando suas tarefas no armazenamento local do seu navegador. caso queira salvalas para utilizar em outros locais crie uma conta
+<template >
+<div class="container-a">
+<div class="card">
+<h5  class="instruction">
+Essa ferramenta funciona armazenando sua lista no armazenamento local do seu navegador. caso queira salvalas para utilizar em outros locais crie uma conta<a :href="route('register')"
+ class=" instruction ml-1 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
+>Criar Conta</a> ou entre em sua conta  <a
+                    :href="route('login')"
+                    class=" font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
+                    >Entrar</a
+                >
 </h5>
-<h3>Dicas:</h3>
+<div >
 <h1>
- 
-Lista de tarefas
+Lista 
 </h1>
-
-<ul>
-<li v-for="(task, numbertask) in tasks" :key="numbertask"  :id="'a'+task['numbertask']" >
-  {{ task["task"]}} prioridade:{{ task["priority"]}}
-  <br>
-  <button @click.prevent="edit(id='a'+task['numbertask'])" >Editar</button>
-  <button @click.prevent="destroy(id=task['numbertask'])">Deletar</button>
- 
+<br>
+<ul >
+<li v-for="(task, numbertask) in tasks" :key="numbertask"  :id="'a'+task['numbertask']" class="border-a">
+  <div class="flex-grow">{{ task["task"]}} Quantidade:{{ task["amount"]}}</div>
+  <button class="edit" @click.prevent="edit(id='a'+task['numbertask'])" >Editar</button>
+  <button class="delete" @click.prevent="destroy(id=task['numbertask'])">Deletar</button>
 </li>
 </ul>
-<h3 >Nova tarefa</h3>
-<form>
+<br>
+</div>
+<div>
+<h3 class="newtask">Nova Elemento</h3>
+<form class="newtask">
 <label from="newtask">Tarefa</label>
 <input  v-model="newtask" name="newtask" type="text"/>
-<label from="priority" type="nunber">Numero da tarefa</label>
-<input v-model="newtask_priority"  name="priority"/>
+<label from="amount" type="nunber">Quantidade</label>
+<input v-model="newtask_amount"  name="amount"/>
 <br>
-<button @click="submit">Salvar</button>
+<button class="save" @click="submit">Salvar</button>
+<button  class="delete" @click="clear">Limpar Tudo</button>
 </form>
-<button @click="clear">Limpar Tudo</button>
+</div>
 <Teleport  v-if="teleport_id" :to="`#${teleport_id}`">
-  <label from="newtask">Tarefa</label>
+  <div class="border-b">
+  <label from="newtask">Elemento</label>
   <input v-model="edit_task" type="text" name="editar"/> 
-  <label from="priority" type="nunber">Numero da tarefa</label>
-  <input v-model="edit_priority" type="text" name="editar"/> 
-  <button @click="save">Salvar</button>
+  <label from="amount" type="nunber">Quantidade</label>
+  <input v-model="edit_amount" type="text" name="editar"/> 
+  <button  @click="save">Salvar</button>
+  </div>
 </Teleport>
+</div>
+  <a :href="route('register')"
+ class=" h-4 p-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
+>Criar Conta</a>
+<a :href="route('login')"
+  class="h-4 p-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
+  >Entrar</a>
 
-
-
-
+</div>
 </template>
 <style scoped>
-</style>
+.flex{
+  display: flex;
+}
+.container-a{
+  display:flex;
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+  
+}
+.card{
+  display:flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 50%;
+  border-right: 5px solid rgb(173, 174, 250);;
+  border-left: 5px solid rgb(173, 174, 250);;
+  background-color:rgb(255, 253, 253);
 
+}
+.border-a{
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+   border-bottom: 2px solid black;
+   padding-left: 5px;
+}
+.border-b{
+  margin: 2px;
+}
+.instruction{
+  background-color:rgb(173, 174, 250);
+}
+.newtask{
+   background-color:rgb(178, 188, 243);
+}
+.edit{
+   background-color:rgb(178, 188, 243);
+}
+.delete{
+   margin-right: 5px;
+   margin-left: 5px;
+ background-color:rgb(250, 0, 75);
+}
+.list{
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+.flex-grow{
+  flex-grow: 3;
+}
+.save{
+background-color: blue;
+}
+</style>
 <script >
-import { h } from 'vue'
+
 export default {
     data() {
     return {
       tasks:{},
       edit_task:'',
-      edit_priority:'',
+      edit_amount:'',
       teleport_id:"",
       newtask:"",
-      newtask_priority:"",
+      newtask_amount:"",
       numbertasktotal:0
     };
     },
@@ -66,7 +135,7 @@ export default {
       save(){
        const taskObject = {
         task:this.edit_task,
-        priority:this.edit_priority,
+        amount:this.edit_amount,
         numbertask:this.teleport_id.replace('a','')
       }
       console.log(this.teleport_id.replace('a',''))
@@ -81,7 +150,7 @@ export default {
     submit() {
       const taskObject = {
         task: this.newtask,
-        priority:this.newtask_priority,
+        amount:this.newtask_amount,
         numbertask:this.numbertasktotal+1
       }
         localStorage.setItem('numbertasktotal', JSON.stringify(this.numbertasktotal+1 ));
